@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          margin: EdgeInsets.only(),
+          margin: EdgeInsets.only(top: 20),
           child: Center(
             child: Row(
               children: [
@@ -90,7 +90,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Text(
-                  "Welcome Back!",
+                  "Enter your email and password",
                   style: TextStyle(color: Colors.grey, fontSize: 20),
                 )
               ],
@@ -172,24 +172,22 @@ class _LoginState extends State<Login> {
                         _emailController.text.trim(),
                         _passwordController.text.trim());
 
+                    _emailController.clear();
+                    _passwordController.clear();
+
                     if (body["message"] != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(body["message"])));
                       return;
                     }
-
-                    // Clear the text fields on successful login
-                    _emailController.clear();
-                    _passwordController.clear();
-
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Dashboard()));
                   } catch (e) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(e.toString())));
                   }
                 },
-                child: Text("SIGN IN"))
+                child: Text("SIGN IN NOW"))
           ],
         ),
       ),

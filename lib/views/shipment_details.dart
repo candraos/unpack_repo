@@ -63,13 +63,13 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.clear();
               Navigator.of(context).popUntil(
-                  (route) => route.isFirst); // Call the logout function
+                  (route) => route.isFirst); // Navigate to the first screen
             },
           ),
         ]),
       ),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Disable the back button
         actions: [
           Builder(
             builder: (context) => IconButton(
@@ -95,8 +95,7 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                   ),
                 ),
                 SizedBox(
-                    width:
-                        10), // Add some spacing between the logo and the text
+                    width: 10), // Adds spacing between the logo and the text
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -136,7 +135,7 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
-                          fontSize: 24,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold))),
               Container(
                 margin: EdgeInsets.only(bottom: 15),

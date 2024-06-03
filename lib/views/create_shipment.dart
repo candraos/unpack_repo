@@ -64,7 +64,7 @@ class _CreateShipmentState extends State<CreateShipment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
+      endDrawer: Drawer(
         child: ListView(children: [
           ListTile(
             leading: Icon(Icons.logout),
@@ -74,13 +74,14 @@ class _CreateShipmentState extends State<CreateShipment> {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.clear();
               Navigator.of(context).popUntil(
-                  (route) => route.isFirst); // Call the logout function
+                  (route) => route.isFirst); // Navigate to the first screen
             },
           ),
         ]),
       ),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Disable the back button
+
         actions: [
           Builder(
             builder: (context) => IconButton(
@@ -106,8 +107,7 @@ class _CreateShipmentState extends State<CreateShipment> {
                   ),
                 ),
                 SizedBox(
-                    width:
-                        10), // Add some spacing between the logo and the text
+                    width: 10), // Adds spacing between the logo and the text
                 Expanded(
                   child: RichText(
                     text: TextSpan(

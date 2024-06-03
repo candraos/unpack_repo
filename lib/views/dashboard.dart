@@ -67,13 +67,13 @@ class _DashboardState extends State<Dashboard> {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.clear();
               Navigator.of(context).popUntil(
-                  (route) => route.isFirst); // Call the logout function
+                  (route) => route.isFirst); // Navigate to the first screen
             },
           ),
         ]),
       ),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Disable the back button
         actions: [
           Builder(
             builder: (context) => IconButton(
@@ -99,8 +99,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 ),
                 SizedBox(
-                    width:
-                        10), // Add some spacing between the logo and the text
+                    width: 10), // Adds spacing between the logo and the text
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -134,9 +133,12 @@ class _DashboardState extends State<Dashboard> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
               }
+
+              if (snapshot.hasError || service.shipments.isEmpty) {
+                return Center(child: Text("No shipments available."));
+              }
+
               Container(
                   margin: EdgeInsets.only(left: 20, top: 20),
                   width: MediaQuery.of(context).size.width,
@@ -313,9 +315,12 @@ class _DashboardState extends State<Dashboard> {
                                   ConnectionState.waiting) {
                                 return Center(
                                     child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${snapshot.error}'));
+                              } else if (snapshot.hasError ||
+                                  service.statistics == null) {
+                                return Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Text("No statistics available"),
+                                );
                               }
                               return Column(
                                 children: [
