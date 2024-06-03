@@ -28,16 +28,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           backgroundColor: Color.fromRGBO(38, 38, 38, 1.0),
-
         ),
         primaryColor: Color.fromRGBO(38, 38, 38, 1.0),
         secondaryHeaderColor: Color.fromRGBO(237, 69, 69, 1.0),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10), // Adjust the value as needed
+              borderRadius:
+                  BorderRadius.circular(10), // Adjust the value as needed
             ),
             backgroundColor: Color.fromRGBO(38, 38, 38, 1.0),
+            foregroundColor: Colors.white,
           ),
         ),
       ),

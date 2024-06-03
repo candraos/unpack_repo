@@ -31,7 +31,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(),
           child: Center(
             child: Row(
               children: [
@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
                       fontSize: 40,
                     fontWeight: FontWeight.bold
                   ),),
-                  Text("Enter your information to register",style: TextStyle(
+                  Text("Let's Get Started",style: TextStyle(
                       color: Colors.grey,
                       fontSize: 20
                   ),)
@@ -222,7 +222,7 @@ class _RegisterState extends State<Register> {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => Dashboard()));
                         }
                       },
-                      child: Text("REGISTER NOW")
+                      child: Text("REGISTER")
                   ),
                 ),
               )

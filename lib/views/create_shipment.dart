@@ -11,7 +11,6 @@ import '../models/item.dart';
 import '../models/shipment.dart';
 import '../models/warehouse.dart';
 
-
 class CreateShipment extends StatefulWidget {
   const CreateShipment({super.key});
 
@@ -20,28 +19,30 @@ class CreateShipment extends StatefulWidget {
 }
 
 class _CreateShipmentState extends State<CreateShipment> {
-
-
-  getWarehousesAndReceivers() async{
+  getWarehousesAndReceivers() async {
     _warehouses = await WarehouseService().fetchWarehouses();
     _receivers = await ReceiverService().fetchReceivers();
     warehouseNames = _warehouses.map((warehouse) => warehouse.name).toList();
     receiversNames = _receivers.map((receivers) => receivers.name).toList();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   List<Warehouse> _warehouses = [];
   Warehouse? _selectedWarehouse;
   List<String> warehouseNames = [];
 
-
   List<Receiver> _receivers = [];
   Receiver? _selectedReceiver;
   List<String> receiversNames = [];
 
-  List<String> _itemTypes = ['Electronics', 'Clothing', 'Furniture', 'Pharmaceuticals', 'Food', 'Other'];
+  List<String> _itemTypes = [
+    'Electronics',
+    'Clothing',
+    'Furniture',
+    'Pharmaceuticals',
+    'Food',
+    'Other'
+  ];
   String? _selectedType;
 
   bool isSensitive = false;
@@ -62,34 +63,39 @@ class _CreateShipmentState extends State<CreateShipment> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       drawer: Drawer(
-        child: ListView(
-            children: [
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
-                onTap: () async{
-                  Navigator.pop(context); // Close the drawer
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  await prefs.clear();
-                  Navigator.of(context).popUntil((route) => route.isFirst);// Call the logout function
-                },
-              ),
-            ]
-        ),
+        child: ListView(children: [
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            onTap: () async {
+              Navigator.pop(context); // Close the drawer
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              Navigator.of(context).popUntil(
+                  (route) => route.isFirst); // Call the logout function
+            },
+          ),
+        ]),
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-
-
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu), // Hamburger menu icon
+              onPressed: () =>
+                  Scaffold.of(context).openEndDrawer(), // Opens the endDrawer
+            ),
+          ),
+        ],
         flexibleSpace: Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(),
           child: Center(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
                 Container(
                   margin: EdgeInsets.only(left: 15),
                   child: SvgPicture.asset(
@@ -99,29 +105,35 @@ class _CreateShipmentState extends State<CreateShipment> {
                     color: Colors.white, // Color the icon in white
                   ),
                 ),
-
+                SizedBox(
+                    width:
+                        10), // Add some spacing between the logo and the text
                 Expanded(
                   child: RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
                           text: ' UN',
-                          style: TextStyle(color: Theme.of(context).secondaryHeaderColor,fontSize: 25,fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Theme.of(context).secondaryHeaderColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
                           text: 'PACK',
-                          style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
         ),
-
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
@@ -132,27 +144,26 @@ class _CreateShipmentState extends State<CreateShipment> {
                 Container(
                     margin: EdgeInsets.only(left: 30),
                     width: MediaQuery.of(context).size.width,
-                    child: Text("Create Shipment",textAlign: TextAlign.left,style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 30,fontWeight: FontWeight.bold))),
-
+                    child: Text("Create Shipment",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold))),
                 Container(
                   margin: EdgeInsets.only(bottom: 15),
                   child: TextFormField(
                     controller: _originController,
-                    decoration: InputDecoration(
-                        hintText: "origin"
-                    ),
+                    decoration: InputDecoration(hintText: "origin"),
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.only(bottom: 15),
                   child: TextFormField(
                     controller: _destinationController,
-                    decoration: InputDecoration(
-                        hintText: "destination"
-                    ),
+                    decoration: InputDecoration(hintText: "destination"),
                   ),
                 ),
-
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: DropdownButton<Warehouse>(
@@ -164,7 +175,8 @@ class _CreateShipmentState extends State<CreateShipment> {
                         _selectedWarehouse = newValue;
                       });
                     },
-                    items: _warehouses.map<DropdownMenuItem<Warehouse>>((Warehouse warehouse) {
+                    items: _warehouses.map<DropdownMenuItem<Warehouse>>(
+                        (Warehouse warehouse) {
                       return DropdownMenuItem<Warehouse>(
                         value: warehouse,
                         child: Text(warehouse.name),
@@ -172,7 +184,6 @@ class _CreateShipmentState extends State<CreateShipment> {
                     }).toList(),
                   ),
                 ),
-
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: DropdownButton<Receiver>(
@@ -184,7 +195,8 @@ class _CreateShipmentState extends State<CreateShipment> {
                         _selectedReceiver = newValue;
                       });
                     },
-                    items: _receivers.map<DropdownMenuItem<Receiver>>((Receiver receiver) {
+                    items: _receivers
+                        .map<DropdownMenuItem<Receiver>>((Receiver receiver) {
                       return DropdownMenuItem<Receiver>(
                         value: receiver,
                         child: Text(receiver.name),
@@ -192,34 +204,30 @@ class _CreateShipmentState extends State<CreateShipment> {
                     }).toList(),
                   ),
                 ),
-
                 Container(
-                    margin: EdgeInsets.only(left: 30,top: 30),
+                    margin: EdgeInsets.only(left: 30, top: 30),
                     width: MediaQuery.of(context).size.width,
-                    child: Text("Add items",textAlign: TextAlign.left,style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 20,fontWeight: FontWeight.bold))),
-
-
+                    child: Text("Add items",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold))),
                 Container(
                   margin: EdgeInsets.only(bottom: 15),
                   child: TextFormField(
                     controller: _itemNameController,
-                    decoration: InputDecoration(
-                        hintText: "item name"
-                    ),
+                    decoration: InputDecoration(hintText: "item name"),
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.only(bottom: 15),
                   child: TextFormField(
                     controller: _itemQuantityController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        hintText: "quantity"
-                    ),
+                    decoration: InputDecoration(hintText: "quantity"),
                   ),
                 ),
-
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: DropdownButton(
@@ -231,7 +239,8 @@ class _CreateShipmentState extends State<CreateShipment> {
                         _selectedType = newValue;
                       });
                     },
-                    items: _itemTypes.map<DropdownMenuItem<String>>((String value) {
+                    items: _itemTypes
+                        .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -239,8 +248,6 @@ class _CreateShipmentState extends State<CreateShipment> {
                     }).toList(),
                   ),
                 ),
-
-
                 Row(
                   children: [
                     Checkbox(
@@ -252,8 +259,8 @@ class _CreateShipmentState extends State<CreateShipment> {
                         });
                       },
                     ),
-
-                    Expanded( // Use Expanded to make the Text widget take up remaining space
+                    Expanded(
+                      // Use Expanded to make the Text widget take up remaining space
                       child: Text(
                         'is sensitive',
                         textAlign: TextAlign.left, // Align text to the left
@@ -261,12 +268,8 @@ class _CreateShipmentState extends State<CreateShipment> {
                     ),
                   ],
                 ),
-
-
-
-
                 Container(
-                  margin: EdgeInsets.only(right: 10, bottom:10),
+                  margin: EdgeInsets.only(right: 10, bottom: 10),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
@@ -274,23 +277,19 @@ class _CreateShipmentState extends State<CreateShipment> {
                         addedItems.add(Item(
                             name: _itemNameController.text.trim(),
                             type: _selectedType!,
-                            quantity: int.parse(_itemQuantityController.text.trim()),
+                            quantity:
+                                int.parse(_itemQuantityController.text.trim()),
                             isSensitive: isSensitive));
                         _itemQuantityController.text = "";
                         _itemNameController.text = "";
                         isSensitive = false;
                         _selectedType = null;
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
                       child: Text("Add item"),
-
                     ),
                   ),
                 ),
-
-
                 Column(
                   children: List.generate(addedItems.length, (index) {
                     return Container(
@@ -301,58 +300,80 @@ class _CreateShipmentState extends State<CreateShipment> {
                             margin: EdgeInsets.only(bottom: 15),
                             child: Row(
                               children: [
-                                Text("Item Name: ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                Text(addedItems[index].name,style: TextStyle(fontSize: 20),),
+                                Text(
+                                  "Item Name: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                Text(
+                                  addedItems[index].name,
+                                  style: TextStyle(fontSize: 20),
+                                ),
                               ],
                             ),
                           ),
-
                           Container(
                             margin: EdgeInsets.only(bottom: 15),
                             child: Row(
                               children: [
-                                Text("Item Quantity: ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                Text(addedItems[index].quantity.toString(),style: TextStyle(fontSize: 20)),
+                                Text(
+                                  "Item Quantity: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                Text(addedItems[index].quantity.toString(),
+                                    style: TextStyle(fontSize: 20)),
                               ],
                             ),
                           ),
-
                           Container(
                             margin: EdgeInsets.only(bottom: 15),
                             child: Row(
                               children: [
-                                Text("Item Type: ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                Text(addedItems[index].type,style: TextStyle(fontSize: 20)),
+                                Text(
+                                  "Item Type: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                Text(addedItems[index].type,
+                                    style: TextStyle(fontSize: 20)),
                               ],
                             ),
                           ),
-
                           Container(
                             margin: EdgeInsets.only(bottom: 15),
                             child: Row(
                               children: [
-                                Text("Is Sensitive: ",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                Text(addedItems[index].isSensitive ? "yes" : "no",style: TextStyle(fontSize: 20)),
+                                Text(
+                                  "Is Sensitive: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                Text(
+                                    addedItems[index].isSensitive
+                                        ? "yes"
+                                        : "no",
+                                    style: TextStyle(fontSize: 20)),
                               ],
                             ),
                           ),
-
                           Container(
-                            margin: EdgeInsets.only(right: 10, bottom:10),
+                            margin: EdgeInsets.only(right: 10, bottom: 10),
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Theme.of(context).secondaryHeaderColor
-                                ),
+                                    backgroundColor:
+                                        Theme.of(context).secondaryHeaderColor),
                                 onPressed: () {
                                   addedItems.removeAt(index);
-                                  setState(() {
-
-                                  });
+                                  setState(() {});
                                 },
                                 child: Text("Remove item"),
-
                               ),
                             ),
                           ),
@@ -361,43 +382,40 @@ class _CreateShipmentState extends State<CreateShipment> {
                     );
                   }),
                 ),
-
-
-
                 Container(
-
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor
-                        ),
-                        onPressed: () async{
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                            backgroundColor: Theme.of(context).primaryColor),
+                        onPressed: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                           String customerId = prefs.getString('id') ?? '';
-                          ShipmentService service = Provider.of<ShipmentService>(context,listen: false);
-                          try{
-                           String fee = await service.createShipment(
-                                Shipment(
-                                    customerId: customerId,
-                                    receiverId: _selectedReceiver!.id,
-                                    origin: _originController.text.trim(),
-                                    destination: _destinationController.text.trim(),
-                                    shipmentDate: DateTime.now(),
-                                    expectedDeliveryDate: null,
-                                    status: "pending",
-                                    warehouseId: _selectedWarehouse!.id,
-                                    items: addedItems)
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Shipment Created Successfully")));
+                          ShipmentService service =
+                              Provider.of<ShipmentService>(context,
+                                  listen: false);
+                          try {
+                            String fee = await service.createShipment(Shipment(
+                                customerId: customerId,
+                                receiverId: _selectedReceiver!.id,
+                                origin: _originController.text.trim(),
+                                destination: _destinationController.text.trim(),
+                                shipmentDate: DateTime.now(),
+                                expectedDeliveryDate: null,
+                                status: "pending",
+                                warehouseId: _selectedWarehouse!.id,
+                                items: addedItems));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("Shipment Created Successfully")));
                             Navigator.of(context).pop(fee);
-                          }catch(e){
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: ${e}")));
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Error: ${e}")));
                           }
-
-                          },
-                        child: Text("Submit Shipment")
-                    ),
+                        },
+                        child: Text("Submit Shipment")),
                   ),
                 )
               ],
