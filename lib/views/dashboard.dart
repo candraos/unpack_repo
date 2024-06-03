@@ -133,12 +133,49 @@ class _DashboardState extends State<Dashboard> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                Container(
+                    margin: EdgeInsets.only(left: 20, top: 20),
+                    width: MediaQuery.of(context).size.width,
+                    child: Text("Dashboard",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold)));
+                String noShipmentsText = snapshot.hasError
+                    ? 'Error loading shipments.'
+                    : 'No shipments found';
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(noShipmentsText),
+                      SizedBox(height: 20),
+                      Visibility(
+                        visible: type.toLowerCase() == "customer",
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10, bottom: 10),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  final result = await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              CreateShipment()));
+                                  if (result != null) {
+                                    _showPopup(context, result);
+                                  }
+                                },
+                                child: Text("Create")),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               }
-
-              if (snapshot.hasError || service.shipments.isEmpty) {
-                return Center(child: Text("No shipments available."));
-              }
-
               Container(
                   margin: EdgeInsets.only(left: 20, top: 20),
                   width: MediaQuery.of(context).size.width,
@@ -315,12 +352,9 @@ class _DashboardState extends State<Dashboard> {
                                   ConnectionState.waiting) {
                                 return Center(
                                     child: CircularProgressIndicator());
-                              } else if (snapshot.hasError ||
-                                  service.statistics == null) {
-                                return Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Text("No statistics available"),
-                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                    child: Text('No statistics found'));
                               }
                               return Column(
                                 children: [

@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(),
           child: Center(
             child: Row(
               children: [
